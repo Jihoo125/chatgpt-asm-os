@@ -96,6 +96,12 @@ handle_command:
     je .clear
 
     mov si, line_buffer
+    mov di, cmd_cls
+    call string_equals
+    cmp al, 1
+    je .clear
+
+    mov si, line_buffer
     mov di, cmd_ver
     call string_equals
     cmp al, 1
@@ -167,14 +173,15 @@ string_equals:
     mov al, 1
     ret
 
-banner db "ChatGPT Codex ASM OS Ver0.1b4 Build 5 (C)2026 OpenAI", 0x0D, 0x0A, 0
-version_text db "Ver0.1b4 Build 5", 0x0D, 0x0A, 0
-help_text db "help clear ver fdisk edit", 0x0D, 0x0A, 0
+banner db "ASM OS Ver0.1.0 Build 7 (C)2026 OA", 0x0D, 0x0A, 0
+version_text db "Ver0.1.0 B7", 0x0D, 0x0A, 0
+help_text db "help clear cls ver fdisk edit", 0x0D, 0x0A, 0
 fdisk_text db "FDISK: N/A", 0x0D, 0x0A, 0
 edit_text db "EDIT: N/A", 0x0D, 0x0A, 0
 unknown_text db "?", 0x0D, 0x0A, 0
 cmd_help db "help", 0
 cmd_clear db "clear", 0
+cmd_cls db "cls", 0
 cmd_ver db "ver", 0
 cmd_fdisk db "fdisk", 0
 cmd_edit db "edit", 0
