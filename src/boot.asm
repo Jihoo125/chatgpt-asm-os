@@ -101,9 +101,19 @@ handle_command:
     cmp al, 1
     je .ver
 
-    mov si, echo_prefix
-    call print_string
     mov si, line_buffer
+    mov di, cmd_fdisk
+    call string_equals
+    cmp al, 1
+    je .fdisk
+
+    mov si, line_buffer
+    mov di, cmd_edit
+    call string_equals
+    cmp al, 1
+    je .edit
+
+    mov si, unknown_text
     call print_string
     ret
 
@@ -120,6 +130,16 @@ handle_command:
 
 .ver:
     mov si, version_text
+    call print_string
+    ret
+
+.fdisk:
+    mov si, fdisk_text
+    call print_string
+    ret
+
+.edit:
+    mov si, edit_text
     call print_string
     ret
 
@@ -147,13 +167,17 @@ string_equals:
     mov al, 1
     ret
 
-banner db "ChatGPT Codex ASM OS Ver0.1b3 Build 4 - Copyright 2026 (R)ChatGPT & (R)OpenAI", 0x0D, 0x0A, "Type and press Enter.", 0x0D, 0x0A, 0
-version_text db "Version: Ver0.1b3 Build 4", 0x0D, 0x0A, 0
-help_text db "Commands: help, clear, ver", 0x0D, 0x0A, 0
-echo_prefix db "You typed: ", 0
+banner db "ChatGPT Codex ASM OS Ver0.1b4 Build 5 (C)2026 OpenAI", 0x0D, 0x0A, 0
+version_text db "Ver0.1b4 Build 5", 0x0D, 0x0A, 0
+help_text db "help clear ver fdisk edit", 0x0D, 0x0A, 0
+fdisk_text db "FDISK: N/A", 0x0D, 0x0A, 0
+edit_text db "EDIT: N/A", 0x0D, 0x0A, 0
+unknown_text db "?", 0x0D, 0x0A, 0
 cmd_help db "help", 0
 cmd_clear db "clear", 0
 cmd_ver db "ver", 0
+cmd_fdisk db "fdisk", 0
+cmd_edit db "edit", 0
 prompt db "> ", 0
 newline db 0x0D, 0x0A, 0
 line_buffer times 64 db 0
